@@ -1,0 +1,19 @@
+Custom:
+1.	Di data anggota bisa setting simpanan dan pinjaman, 
+	yang kemudian dapat diautodebet (ini ada menu sendiri, tinggal setting aja)
+
+2.	bunga simpanan dan bunga pinjaman dibuat laporan terpisah. 
+	(dan untuk bunga simpanan itu, ketika dibayar diangsur, 
+	maka bunga tetap berjalan (bunga untuk pendapatan si anggota tsb), 
+	untuk laporan ini dapat disort berdasarkan nama anggota dan waktu.
+
+3.	hitungan untuk Pinjaman validasi lunas diambil dari pinjaman pokok & provisi 
+	yg blm dibayar.
+
+4.	tampilan Laporan kas anggota dipisah (saldo simpanan dan pinjaman) (v)
+
+5.	Tampilan Laporan autodebet informasi detail dan keterangan di hilangkan, 
+	biodata hanya nama dan ID, dan ketika di eksport yg muncul hanya tagihan 
+	simpanan dan pinjaman.
+
+6.	Tampilan tabel angsuran simpanan sama dengan tabel angsuran pinjaman
