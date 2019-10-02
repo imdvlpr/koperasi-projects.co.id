@@ -22,7 +22,7 @@
 .form-control {
 	height: 20px;
 	padding: 4px;
-}	
+}
 </style>
 
 <div class="box box-solid box-primary">
@@ -42,7 +42,7 @@
 					<form id="fmCari">
 					 <input id="anggota_id" name="anggota_id" value="" style="width:200px; height:25px" class="">
 					 </form>
-				</td>	
+				</td>
 				<td>
 					<a href="javascript:void(0);" id="btn_filter" class="easyui-linkbutton" iconCls="icon-search" plain="false" onclick="doSearch()">Lihat Laporan</a>
 					<!--<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-print" plain="false" onclick="cetak()">Cetak Laporan</a>-->
@@ -71,13 +71,13 @@
 			<th style="width:23%; vertical-align: middle; text-align:center"> Keterangan </th>
 		</tr>
 	<?php
-	
+
 	$no = $offset + 1;
 	$mulai=1;
 	if (!empty($data_anggota)) {
 
 		$query = $this->db->query("select * from auto_debet_tempo");
-		
+
 		foreach ($data_anggota as $row) {
 
 			$status_anggota_array=array('anggota'=>'1','anggota luarbiasa'=>'2');
@@ -87,11 +87,11 @@
 			foreach ($query->result() as $key) {
 
 				if($status_anggota_array[$row->status_anggota] == $key->status_anggota){
-					
+
 					//if($key->tanggal_tempo == 6){
-					
+
 						if(($no % 2) == 0) {
-							$warna="#EEEEEE"; } 
+							$warna="#EEEEEE"; }
 						else {
 							$warna="#FFFFFF";}
 
@@ -140,22 +140,22 @@
 						if ($row->jk == "L") {
 							$jk="Laki-Laki";
 						} else {
-							$jk="Perempuan"; 
+							$jk="Perempuan";
 						}
 
 						//jabatan
 						if ($row->jabatan_id == "1") {
 							$jabatan="Pengurus";
 						} else {
-							$jabatan="Anggota"; 
+							$jabatan="Anggota";
 						}
 						// AG'.sprintf('%04d', $row->id).'
-						
+
 						echo '
 							<tr bgcolor='.$warna.' >
 								<td class="h_tengah" style="vertical-align: middle "> '.$no++.' </td>
 								<td class="h_tengah" style="vertical-align: top "> '.$photo.'</td>
-								<td> 
+								<td>
 									<table>
 										<tr><td> ID Anggota : '.$row->identitas.'</td></tr>
 										<tr><td> Nama : <b>'.strtoupper($row->nama).'</b> </td></tr>
@@ -166,18 +166,18 @@
 								</td>
 								<td>';
 								$simpanan_arr = array();
-								$simpanan_row_total = 0; 
-								$simpanan_total = 0; 
+								$simpanan_row_total = 0;
+								$simpanan_total = 0;
 								foreach ($data_jns_simpanan as $jenis) {
 									$simpanan_arr[$jenis->id] = $jenis->jns_simpan;
 									$nilai_s = $this->lap_kas_anggota_m->get_jml_simpanan($jenis->id, $row->id);
 									$nilai_p = $this->lap_kas_anggota_m->get_jml_penarikan($jenis->id, $row->id);
-									
+
 									//$simpanan_row=$nilai_s->jml_total - $nilai_p->jml_total;
 									if($jenis->jns_simpan=="Simpanan Sukarela"){
 										$lap_autodebet_per_simpanan = $this->autodebet_m->lap_autodebet_per_simpanan($first_day_this_month,$last_day_this_month,$jenis->id,$row->id);
 										if($lap_autodebet_per_simpanan->num_rows() == 0){
-											$simpanan_row = 0;	
+											$simpanan_row = 0;
 										}
 										else{
 											$simpanan_row = $lap_autodebet_per_simpanan->row()->total;
@@ -185,7 +185,7 @@
 									}else if($jenis->jns_simpan=="Simpanan Pokok"){
 										$lap_autodebet_per_simpanan = $this->autodebet_m->lap_autodebet_per_simpanan($first_day_this_month,$last_day_this_month,$jenis->id,$row->id);
 										if($lap_autodebet_per_simpanan->num_rows() == 0){
-											$simpanan_row = 0;	
+											$simpanan_row = 0;
 										}
 										else{
 											$simpanan_row = $lap_autodebet_per_simpanan->row()->total;
@@ -193,7 +193,7 @@
 									}else if($jenis->jns_simpan=="Simpanan Wajib"){
 									 	$lap_autodebet_per_simpanan = $this->autodebet_m->lap_autodebet_per_simpanan($first_day_this_month,$last_day_this_month,$jenis->id,$row->id);
 										if($lap_autodebet_per_simpanan->num_rows() == 0){
-											$simpanan_row = 0;	
+											$simpanan_row = 0;
 										}
 										else{
 											$simpanan_row = $lap_autodebet_per_simpanan->row()->total;
@@ -201,7 +201,7 @@
 									}else if($jenis->jns_simpan=="Simpanan Khusus"){
 										$lap_autodebet_per_simpanan = $this->autodebet_m->lap_autodebet_per_simpanan($first_day_this_month,$last_day_this_month,$jenis->id,$row->id);
 										if($lap_autodebet_per_simpanan->num_rows() == 0){
-											$simpanan_row = 0;	
+											$simpanan_row = 0;
 										}
 										else{
 											$simpanan_row = $lap_autodebet_per_simpanan->row()->total;
@@ -209,7 +209,7 @@
 									}else if($jenis->jns_simpan=="Simpanan Harian"){
 										$lap_autodebet_per_simpanan = $this->autodebet_m->lap_autodebet_per_simpanan($first_day_this_month,$last_day_this_month,$jenis->id,$row->id);
 										if($lap_autodebet_per_simpanan->num_rows() == 0){
-											$simpanan_row = 0;	
+											$simpanan_row = 0;
 										}
 										else{
 											$simpanan_row = $lap_autodebet_per_simpanan->row()->total;
@@ -230,21 +230,21 @@
 												<td class="h_kanan"><strong> '.number_format($simpanan_row_total).'</strong></td>
 											</tr>
 											</table>';
-									
+
 									$lap_autodebet_per_pinjaman = $this->autodebet_m->lap_autodebet_per_pinjaman($first_day_this_month,$last_day_this_month,$row->id);
-									echo '		
+									echo '
 									<td>
 										<table style="width:100%;" border="0"> ';
-									$total_tagihan_pinjaman_arr = array();	
+									$total_tagihan_pinjaman_arr = array();
 									foreach($lap_autodebet_per_pinjaman->result() as $row_tagihan_pinjaman){
-									echo '		
+									echo '
 											<tr>
 												<td> '.$row_tagihan_pinjaman->jns_pinjaman.'</td>
 												<td class="h_kanan">'.number_format($row_tagihan_pinjaman->total).'</td>
 											</tr>';
-										array_push($total_tagihan_pinjaman_arr,$row_tagihan_pinjaman->total);	
+										array_push($total_tagihan_pinjaman_arr,$row_tagihan_pinjaman->total);
 									}
-									
+
 									$tgl_tempo_txt = '';
 									if(array_sum($total_tagihan_pinjaman_arr) != 0 || $simpanan_row_total != 0){
 										if($row->status_anggota == '1'){
@@ -253,7 +253,7 @@
 											$tgl_tempo_txt = $setting_autodebet->tgl_tempo_anggota_luarbiasa;
 										}
 									}
-									
+
 									echo '
 											<tr>
 												<td><strong> Tagihan Pinjaman</strong></td>
@@ -261,8 +261,8 @@
 											</tr>
 										</table>
 									</td>
-									<td> 
-										<table style="width:100%;" > 
+									<td>
+										<table style="width:100%;" >
 											<tr>
 												<td> Jumlah Pinjaman </td>
 												<td class="h_kanan">'.$peminjam_tot.'</td>
@@ -280,49 +280,49 @@
 												<td class="h_kanan"> <code>'.$tgl_tempo_txt.'-'.$current_month.'-'.$current_year.'</code></td>
 											</tr>
 										</table><br>';
-									
-									
+
+
 									$detail_pinjaman = $this->lap_kas_anggota_m->get_pinjaman_anggota($row->id);
 									if(count($detail_pinjaman)>0){
 										echo "<h4>Informasi Pinjaman</h4><hr>";
 									}
 									foreach ($detail_pinjaman as $dp) {
-										echo 
+										echo
 											'<table style="text-align:left">
 												<tr>
-													<td width="100px" align="left">Nama Barang</td> 
+													<td width="100px" align="left">Nama Barang</td>
 													<td width="10px" align="center"> : </td>
 													<td width="100px" align="left">'.$dp->nm_barang.'</td>
 												</tr>
 												<tr>
-													<td width="100px" align="left">Harga Barang</td> 
+													<td width="100px" align="left">Harga Barang</td>
 													<td width="10px" align="center"> : </td>
 													<td width="100px">Rp. '.number_format($dp->jumlah) .'</td>
 												</tr>
 												<tr>
-													<td width="100px" align="left">Lama Angsuran</td> 
+													<td width="100px" align="left">Lama Angsuran</td>
 													<td width="10px" align="center"> : </td>
 													<td width="100px">'.$dp->lama_angsuran.' Bulan</td>
 												</tr>
 												<tr>
-													<td width="100px" align="left">Pokok Angsuran</td> 
+													<td width="100px" align="left">Pokok Angsuran</td>
 													<td width="10px" align="center"> : </td>
 													<td width="100px">Rp. '.number_format($dp->pokok_angsuran) .'</td>
 												</tr>
 												<tr>
-													<td width="100px" align="left">Bunga Pinjaman</td> 
+													<td width="100px" align="left">Bunga Pinjaman</td>
 													<td width="10px" align="center"> : </td>
 													<td width="100px">Rp. '.number_format(nsi_round($dp->bunga_pinjaman)).'</td>
 												</tr>
 												<tr>
-													<td width="100px" align="left">Biaya Admin</td> 
+													<td width="100px" align="left">Biaya Admin</td>
 													<td width="10px" align="center"> : </td>
 													<td width="100px">Rp. '.number_format($dp->biaya_adm) .'</td>
 												</tr>
 											</table>=============================';
 									}
 
-								echo'		
+								echo'
 									</td>
 								</tr>';
 							}
@@ -342,11 +342,11 @@
 	?>
 </div>
 </div>
-	
+
 <script type="text/javascript">
 	$(document).ready(function() {
 
-	<?php 
+	<?php
 		if(isset($_REQUEST['anggota_id'])) {
 			echo 'var anggota_id = "'.$_REQUEST['anggota_id'].'";';
 		} else {
@@ -382,7 +382,7 @@ function clearSearch(){
 }
 
 function cetak () {
-	<?php 
+	<?php
 		if(isset($_REQUEST['anggota_id'])) {
 			echo 'var anggota_id = "'.$_REQUEST['anggota_id'].'";';
 		} else {

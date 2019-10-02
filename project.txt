@@ -1,19 +1,65 @@
 Custom:
-1.	Di data anggota bisa setting simpanan dan pinjaman, 
+1.	Di data anggota bisa setting simpanan dan pinjaman,
 	yang kemudian dapat diautodebet (ini ada menu sendiri, tinggal setting aja)
 
-2.	bunga simpanan dan bunga pinjaman dibuat laporan terpisah. 
-	(dan untuk bunga simpanan itu, ketika dibayar diangsur, 
-	maka bunga tetap berjalan (bunga untuk pendapatan si anggota tsb), 
+2.	bunga simpanan dan bunga pinjaman dibuat laporan terpisah.
+	(dan untuk bunga simpanan itu, ketika dibayar diangsur,
+	maka bunga tetap berjalan (bunga untuk pendapatan si anggota tsb),
 	untuk laporan ini dapat disort berdasarkan nama anggota dan waktu.
 
-3.	hitungan untuk Pinjaman validasi lunas diambil dari pinjaman pokok & provisi 
-	yg blm dibayar.
+3.	hitungan untuk Pinjaman validasi lunas diambil dari pinjaman pokok & provisi
+	yg blm dibayar.(x)
 
 4.	tampilan Laporan kas anggota dipisah (saldo simpanan dan pinjaman) (v)
 
-5.	Tampilan Laporan autodebet informasi detail dan keterangan di hilangkan, 
-	biodata hanya nama dan ID, dan ketika di eksport yg muncul hanya tagihan 
-	simpanan dan pinjaman.
+5.	Tampilan Laporan autodebet informasi detail dan keterangan di hilangkan,
+	biodata hanya nama dan ID, dan ketika di eksport yg muncul hanya tagihan
+	simpanan dan pinjaman. (v)
 
-6.	Tampilan tabel angsuran simpanan sama dengan tabel angsuran pinjaman
+6.	Tampilan tabel angsuran simpanan sama dengan tabel angsuran pinjaman (v)
+
+dani
+1) Nominal autodebet
+2) Saldo simpanan nambah ke tabungan yang mana
+	- sukarela , pokok ,
+
+
+3) Mengurangi pinjaman yg diambil darimana
+4) buat laporan bunga simpanan dan bunga pinjaman dipisah
+5) laporan autodebet sebagai tagihan yg dikeluarkan koperasi untuk potong gaji
+--------------------
+
+autodebet semua langsung eksekusi
+jenis anggota yg beda tanggal jatuh tempo
+
+master data anggota
+di menu autodebet : masukan setting pinjaman dan simpanan
+data pinjaman : ketika sudah autodebet , mengurangi sisa tagihan
+sudah dibayar ikut nambah ..
+
+simpanan > setoran tunai ..
+disamain dengan tabel pinjaman > data pinjaman
+angsuran pokok, tanggal tempo , bunga nya .
+
+
+
+bunga simpanan di setting dari master data ->jenis simpanan
+1) bunga simpanan
+simpanan yang ada bunga nya ,
+dari simpanan samppai angsuran simpanan sudah lunas , bunga berjalan ..
+
+2) buat laporan bunga dari pinjaman dan simpanan
+bunga simpanan tiap anggota ..
+bisa di search sesuai nama anggota dan waktu
+rekap seluruh anggota .
+
+3) validasi lunas yg skarang , angusuran pokok + provisi
+validasi sekarang : total jumlah angsuran .
+
+4)
+
+
+bunga simpanan ->simpanan_m -> get_jenis_simpan
+<!-- Data angsuran -->
+$row_pinjam = $this->general_m->get_data_simpanan ($master_id);
+<td class="h_kanan"> <?php echo number_format($row_pinjam->pokok_angsuran); ?></td>

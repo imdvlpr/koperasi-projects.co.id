@@ -17,7 +17,7 @@ td, div {
 .glyphicon	{font-family: "Glyphicons Halflings"}
 </style>
 
-<?php 
+<?php
 	// buaat tanggal sekarang
 	$tanggal = date('Y-m-d H:i');
 	$tanggal_arr = explode(' ', $tanggal);
@@ -26,12 +26,12 @@ td, div {
 ?>
 
 <!-- Data Grid -->
-<table   id="dg" 
+<table   id="dg"
 class="easyui-datagrid"
-title="Data Transaksi Setoran Tunai" 
-style="width:auto; height: auto;" 
-url="<?php echo site_url('simpanan/ajax_list'); ?>" 
-pagination="true" rownumbers="true" 
+title="Data Transaksi Setoran Tunai"
+style="width:auto; height: auto;"
+url="<?php echo site_url('simpanan/ajax_list'); ?>"
+pagination="true" rownumbers="true"
 fitColumns="true" singleSelect="true" collapsible="true"
 sortName="tgl_transaksi" sortOrder="desc"
 toolbar="#tb"
@@ -49,6 +49,7 @@ striped="true">
 		<th data-options="field:'jenis_id',halign:'center', align:'center'" hidden="true">Jenis</th>
 		<th data-options="field:'jenis_id_txt', width:'20',halign:'center', align:'left'">Jenis Simpanan</th>
 		<th data-options="field:'tenor', width:'15', halign:'center', align:'right'">Tenor</th>
+		<th data-options="field:'angsuran', width:'15', halign:'center', align:'right'">Angsuran</th>
 		<th data-options="field:'jumlah', width:'15', halign:'center', align:'right'">Jumlah</th>
 		<th data-options="field:'lunas', width:'15', halign:'center', align:'right'">Lunas</th>
 		<th data-options="field:'ket', width:'15', halign:'center', align:'left'" hidden="true">Keterangan</th>
@@ -77,15 +78,15 @@ striped="true">
 			</button>
 		</div>
 		<select id="cari_simpanan" name="cari_simpanan" style="width:150px; height:27px" >
-			<option value=""> -- Tampilkan Akun --</option>			
-			<?php	
+			<option value=""> -- Tampilkan Akun --</option>
+			<?php
 			foreach ($jenis_id as $row) {
 				echo '<option value="'.$row->id.'">'.$row->jns_simpan.'</option>';
 			}
 			?>
 		</select>
 		<select id="cari_anggota" name="cari_anggota" style="width:150px; height:27px" >
-			<option value=""> -- Jenis Anggota --</option>	
+			<option value=""> -- Jenis Anggota --</option>
 			<?php
 				foreach ($jns_anggota as $row) {
 					echo '<option value="'.$row->id.'">'.$row->nama.'</option>';
@@ -95,7 +96,7 @@ striped="true">
 		<span>Cari :</span>
 		<input name="kode_transaksi" id="kode_transaksi" placeholder="Kode Transaksi" size="15" style="line-height:25px;border:1px solid #ccc;">
 		<input name="cari_nama" id="cari_nama" size="15" placeholder="Nama Anggota" style="line-height:22px;border:1px solid #ccc">
-		
+
 		<a href="javascript:void(0);" id="btn_filter" class="easyui-linkbutton" iconCls="icon-search" plain="false" onclick="doSearch()">Cari</a>
 		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-print" plain="false" onclick="cetak()">Cetak Laporan</a>
 		<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-clear" plain="false" onclick="clearSearch()">Hapus Filter</a>
@@ -119,7 +120,7 @@ striped="true">
 									<input type="hidden" name="tgl_transaksi" id="tgl_transaksi" />
 									<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
 								</div>
-							</td>	
+							</td>
 						</tr>
 						<tr style="height:40px">
 							<td><label for="type">Identitas Penyetor</label></td>
@@ -129,21 +130,21 @@ striped="true">
 							<td>:</td>
 							<td>
 								<input id="nama_penyetor" name="nama_penyetor" style="width:190px; height:20px" >
-							</td>	
+							</td>
 						</tr>
 						<tr style="height:35px">
 							<td>Nomor Identitas</td>
 							<td>:</td>
 							<td>
 								<input id="no_identitas" name="no_identitas" style="width:190px; height:20px" >
-							</td>	
+							</td>
 						</tr>
 						<tr style="height:35px">
 							<td>Alamat</td>
 							<td>:</td>
 							<td>
 								<textarea name="alamat" cols="30" rows="1" style="width:190px;" id="alamat" name="alamat"></textarea>
-							</td>	
+							</td>
 						</tr>
 						<tr style="height:40px">
 							<td colspan="2"><label for="type">Identitas Penerima</label></td>
@@ -154,7 +155,7 @@ striped="true">
 							<td>
 								<input id="anggota_id" name="anggota_id" style="width:195px; height:25px" class="easyui-combogrid" class="easyui-validatebox" required="true" >
 								<input type="hidden" name="anggota_nama" id="anggota_nama">
-							</td>	
+							</td>
 						</tr>
 						<tr style="height:35px">
 							<td>Jenis Simpanan</td>
@@ -162,13 +163,13 @@ striped="true">
 							<td>
 								<select id="jenis_id" name="jenis_id" style="width:195px; height:25px" class="easyui-validatebox" required="true">
 									<option value="0"> -- Pilih Simpanan --</option>
-									<?php	
+									<?php
 									foreach ($jenis_id as $row) {
 										echo '<option value="'.$row->id.'|'.$row->tenor.'|'.$row->auto_simpan.'">'.$row->jns_simpan.'</option>';
 									}
 									?>
 								</select>
-							</td>	
+							</td>
 						</tr>
 
 						<tr style="height:35px" id="field-tenor">
@@ -188,36 +189,36 @@ striped="true">
 									<option value="9">9 Bulan</option>
 									<option value="10">10 Bulan</option>
 								</select>
-							</td>	
+							</td>
 						</tr>
 						<tr style="height:35px">
 							<td>Bunga (%)</td>
 							<td>:</td>
 							<td>
 								<input class="easyui-numberbox" id="bunga" name="bunga" class="easyui-validatebox" required="true" style="width:195px; height:25px"  />
-							</td>	
+							</td>
 						</tr>
 						<tr style="height:35px">
 							<td>Jumlah Simpanan</td>
 							<td>:</td>
 							<td>
 								<input class="easyui-numberbox" id="jumlah" name="jumlah" data-options="precision:0,groupSeparator:',',decimalSeparator:'.'" class="easyui-validatebox" required="true" style="width:195px; height:25px"  />
-							</td>	
+							</td>
 						</tr>
 						<tr style="height:35px">
 							<td>Keterangan</td>
 							<td>:</td>
 							<td>
 								<input id="ket" name="ket" style="width:190px; height:20px" >
-							</td>	
+							</td>
 						</tr>
 						<tr style="height:35px">
 							<td>Simpan Ke Kas</td>
 							<td>:</td>
 							<td>
 								<select id="kas" name="kas_id" style="width:195px; height:25px" class="easyui-validatebox" required="true">
-									<option value="0"> -- Pilih Kas --</option>			
-									<?php	
+									<option value="0"> -- Pilih Kas --</option>
+									<?php
 									foreach ($kas_id as $row) {
 										echo '<option value="'.$row->id.'">'.$row->nama.'</option>';
 									}
@@ -243,12 +244,12 @@ striped="true">
 $(document).ready(function() {
 	$('#jenis_id').change(function(){
 		val_jenis_id = $(this).val();
-		
+
 		var temp = val_jenis_id.split('|');
 		var jenis_id = temp[0];
 		var tenor = temp[1];
 		var auto_simpan = temp[2];
-					
+
 		if(tenor=='Y'){
 
 			$('#field-tenor').show();
@@ -273,14 +274,14 @@ $(document).ready(function() {
 			var data=$.parseJSON(result);
 			$('#jumlah').numberbox('setValue', data.jumlah);
 			$('#jumlah ~ span input').focus();
-			$('#jumlah ~ span input').select();	
+			$('#jumlah ~ span input').select();
 			$('#bunga').numberbox('setValue', data.bunga);
 			$('#bunga ~ span input').focus();
 			$('#bunga ~ span input').select();
 		})
 		.fail(function() {
 			alert('Kesalahan Konekasi, silahkan ulangi beberapa saat lagi.');
-		});		
+		});
 	});
 
 	$(".dtpicker").datetimepicker({
@@ -293,7 +294,7 @@ $(document).ready(function() {
 		format: "dd MM yyyy - hh:ii",
 		linkField: "tgl_transaksi",
 		linkFormat: "yyyy-mm-dd hh:ii"
-	});	
+	});
 
 	$('#anggota_id').combogrid({
 		panelWidth:400,
@@ -337,19 +338,19 @@ $(document).ready(function() {
 			cari_simpanan: $('#cari_simpanan').val()
 		});
 	});
-	
+
 	$("#kode_transaksi").keyup(function(event){
 		if(event.keyCode == 13){
 			$("#btn_filter").click();
 		}
 	});
-	
+
 	$("#cari_nama").keyup(function(event){
 		if(event.keyCode == 13){
 			$("#btn_filter").click();
 		}
 	});
-	
+
 	$("#kode_transaksi").keyup(function(e){
 		var isi = $(e.target).val();
 		$(e.target).val(isi.toUpperCase());
@@ -394,7 +395,7 @@ function form_select_clear() {
 	.remove();
 	$('select option')
 	.first()
-	.prop('selected', true);	
+	.prop('selected', true);
 }
 
 function doSearch(){
@@ -417,7 +418,7 @@ function create(){
 	$('#anggota_id ~ span span a').show();
 	$('#anggota_id ~ span input').removeAttr('disabled');
 	$('#anggota_id ~ span input').focus();
-	
+
 	$('#tgl_transaksi_txt').val('<?php echo $txt_tanggal;?>');
 	$('#tgl_transaksi').val('<?php echo $tanggal;?>');
 	$('#kas option[value="0"]').prop('selected', true);
@@ -435,12 +436,12 @@ function save() {
 	var string = $("#form").serialize();
 	//validasi teks kosong
 	var val_jenis_id = $("#jenis_id").val();
-	
+
 	var temp = val_jenis_id.split('|');
 	var jenis_id = temp[0];
 	var tenor = temp[1];
 	var auto_simpan = temp[2];
-	
+
 	if(jenis_id == 0) {
 		$.messager.show({
 			title:'<div><i class="fa fa-warning"></i> Peringatan ! </div>',
@@ -508,7 +509,7 @@ function update(){
 			var val_jumlah = $(this).val();
 			$('#jumlah').numberbox('setValue', number_format(val_jumlah));
 		});
-		
+
 	}else {
 		$.messager.show({
 			title:'<div><i class="fa fa-warning"></i> Peringatan !</div>',
@@ -519,11 +520,11 @@ function update(){
 	}
 }
 
-function hapus(){  
-	var row = $('#dg').datagrid('getSelected');  
-	if (row){ 
-		$.messager.confirm('Konfirmasi','Apakah Anda akan menghapus data kode transaksi : <code>' + row.id_txt + '</code> ?',function(r){  
-			if (r){  
+function hapus(){
+	var row = $('#dg').datagrid('getSelected');
+	if (row){
+		$.messager.confirm('Konfirmasi','Apakah Anda akan menghapus data kode transaksi : <code>' + row.id_txt + '</code> ?',function(r){
+			if (r){
 				$.ajax({
 					type	: "POST",
 					url		: "<?php echo site_url('simpanan/delete'); ?>",
@@ -548,16 +549,16 @@ function hapus(){
 							showType:'slide'
 						});
 					}
-				});  
-			}  
-		}); 
+				});
+			}
+		});
 	}  else {
 		$.messager.show({
 			title:'<div><i class="fa fa-warning"></i> Peringatan !</div>',
 			msg: '<div class="text-red"><i class="fa fa-ban"></i> Maaf, Data harus dipilih terlebih dahulu </div>',
 			timeout:2000,
 			showType:'slide'
-		});	
+		});
 	}
 	$('.messager-button a:last').focus();
 }
@@ -569,7 +570,7 @@ function cetak () {
 	var cari_anggota 	= $('#cari_anggota').val();
 	var tgl_dari			= $('input[name=daterangepicker_start]').val();
 	var tgl_sampai			= $('input[name=daterangepicker_end]').val();
-	
+
 	var win = window.open('<?php echo site_url("simpanan/cetak_laporan/?cari_simpanan=' + cari_simpanan + '&kode_transaksi=' + kode_transaksi + '&tgl_dari=' + tgl_dari + '&tgl_sampai=' + tgl_sampai + '&cari_nama=' + cari_nama + '&cari_anggota=' + cari_anggota + '"); ?>');
 	if (win) {
 		win.focus();
@@ -578,4 +579,3 @@ function cetak () {
 	}
 }
 </script>
-

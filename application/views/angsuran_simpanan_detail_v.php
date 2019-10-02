@@ -21,7 +21,7 @@
 	.form-control {
 		height: 20px;
 		padding: 4px;
-	}	
+	}
 
 	th {
 		text-align: center;
@@ -32,7 +32,7 @@
 		color :#ffffff;
 	}
 </style>
-<?php 
+<?php
 $dibayar = $hitung_dibayar->total;
 $sisa_bayar = $row_pinjam->jumlah - $dibayar;
 $total_bayar = $sisa_bayar;
@@ -51,7 +51,7 @@ echo ' <a href="'.site_url('angsuran_lunas_simpanan').'/index/'.$row_pinjam->id.
 <!-- detail data anggota -->
 <div class="box box-solid box-primary">
 	<div class="box-header" title="Detail Pinjaman" data-toggle="" data-original-title="Detail Pinjaman">
-		<h3 class="box-title"> Detail Simpanan </h3> 
+		<h3 class="box-title"> Detail Simpanan </h3>
 		<div class="box-tools pull-right">
 			<button class="btn btn-primary btn-xs" data-widget="collapse">
 				<i class="fa fa-minus"></i>
@@ -71,7 +71,7 @@ echo ' <a href="'.site_url('angsuran_lunas_simpanan').'/index/'.$row_pinjam->id.
 						echo '<img src="'.base_url().'uploads/anggota/' . $data_anggota->file_pic . '" alt="Foto" width="'.$photo_w.'" height="'.$photo_h.'" />';
 					}
 					?>
-				</td> 
+				</td>
 				<td>
 					<table style="width:100%">
 						<tr>
@@ -99,7 +99,7 @@ echo ' <a href="'.site_url('angsuran_lunas_simpanan').'/index/'.$row_pinjam->id.
 							<td> <?php echo $data_anggota->tmp_lahir .', '. jin_date_ina ($data_anggota->tgl_lahir); ?></td>
 						</tr>
 						<tr>
-							<td> Kota Tinggal</td> 
+							<td> Kota Tinggal</td>
 							<td> : </td>
 							<td> <?php echo $data_anggota->kota; ?></td>
 						</tr>
@@ -118,25 +118,25 @@ echo ' <a href="'.site_url('angsuran_lunas_simpanan').'/index/'.$row_pinjam->id.
 						<tr>
 							<td> Tanggal Pinjam</td>
 							<td> : </td>
-							<td> <?php 
+							<td> <?php
 								$tanggal_arr = explode(' ', $row_pinjam->tgl_transaksi);
 								$txt_tanggal_p = jin_date_ina($tanggal_arr[0], 'full');
-								echo  $txt_tanggal_p; 
+								echo  $txt_tanggal_p;
 								?>
 							</td>
 						</tr>
 						<tr>
 							<td> Tanggal Tempo</td>
 							<td> : </td>
-							<td> <?php 
+							<td> <?php
 								$tanggal_arr = explode(' ', $row_pinjam->tempo);
 								$txt_tanggal_t = jin_date_ina($tanggal_arr[0], 'full');
-								echo  $txt_tanggal_t; 
+								echo  $txt_tanggal_t;
 								?>
 							</td>
 						</tr>
 						<tr>
-							<td> Tenor</td> 
+							<td> Tenor</td>
 							<td> : </td>
 							<td> <?php echo $row_pinjam->tenor.' Bulan' ?></span></td>
 						</tr>
@@ -155,7 +155,7 @@ echo ' <a href="'.site_url('angsuran_lunas_simpanan').'/index/'.$row_pinjam->id.
 							<td class="h_kanan"> <?php echo number_format($row_pinjam->pokok_angsuran); ?></td>
 						</tr>
 					</table>
-				</td>			
+				</td>
 			</tr>
 		</table>
 	</div>
@@ -183,7 +183,7 @@ echo ' <a href="'.site_url('angsuran_lunas_simpanan').'/index/'.$row_pinjam->id.
 	</tr>
 
 
-<?php //var_dump($simulasi_tagihan); 
+<?php //var_dump($simulasi_tagihan);
 if(!empty($simulasi_tagihan)) {
 	$no = 1;
 	$row = array();
@@ -234,7 +234,7 @@ if(!empty($simulasi_tagihan)) {
 		<th style="width:10%; vertical-align: middle"> User  </th>
 	</tr>
 
-	<?php 
+	<?php
 
 	$mulai=1;
 	$no=1;

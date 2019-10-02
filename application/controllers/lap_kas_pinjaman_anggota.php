@@ -234,7 +234,7 @@ class Lap_kas_pinjaman_anggota extends OPPController {
 		$data["data_jns_simpanan"] = $this->lap_kas_anggota_m->get_jenis_simpan(); // panggil seluruh data simpanan
 
 		echo "
-		<h1> Data Pinjaman Anggota </h1>
+		
 			<table border='1' cellpadding='5'>
 			  <tr>
 				<th>No</th>

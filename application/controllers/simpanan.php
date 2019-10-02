@@ -2,11 +2,11 @@
 
 class Simpanan extends OperatorController {
 	public function __construct() {
-		parent::__construct();	
+		parent::__construct();
 		$this->load->helper('fungsi');
 		$this->load->model('simpanan_m');
 		$this->load->model('general_m');
-	}	
+	}
 
 	public function index() {
 		$this->data['judul_browser'] = 'Transaksi';
@@ -42,7 +42,7 @@ class Simpanan extends OperatorController {
 		$r = '';
 		$data   = $this->general_m->get_data_anggota_ajax($q,$r);
 		$i	= 0;
-		$rows   = array(); 
+		$rows   = array();
 		foreach ($data['data'] as $r) {
 			if($r->file_pic == '') {
 				$rows[$i]['photo'] = '<img src="'.base_url().'assets/theme_admin/img/photo.jpg" alt="default" width="30" height="40" />';
@@ -52,7 +52,7 @@ class Simpanan extends OperatorController {
 			$rows[$i]['id'] = $r->id;
 			$rows[$i]['kode_anggota'] = $r->no_anggota . '<br>' . $r->identitas;
 			$rows[$i]['nama'] = $r->nama;
-			$rows[$i]['kota'] = $r->kota. '<br>' . $r->departement;		
+			$rows[$i]['kota'] = $r->kota. '<br>' . $r->departement;
 			$i++;
 		}
 		//keys total & rows wajib bagi jEasyUI
@@ -90,31 +90,40 @@ class Simpanan extends OperatorController {
 		$cari_anggota = isset($_POST['cari_anggota']) ? $_POST['cari_anggota'] : '';
 		$tgl_dari = isset($_POST['tgl_dari']) ? $_POST['tgl_dari'] : '';
 		$tgl_sampai = isset($_POST['tgl_sampai']) ? $_POST['tgl_sampai'] : '';
-		$search = array('kode_transaksi' => $kode_transaksi, 
+		$search = array('kode_transaksi' => $kode_transaksi,
 			'cari_simpanan' => $cari_simpanan,
 			'cari_nama' => $cari_nama,
 			'cari_anggota' => $cari_anggota,
-			'tgl_dari' => $tgl_dari, 
+			'tgl_dari' => $tgl_dari,
 			'tgl_sampai' => $tgl_sampai);
 		$offset = ($offset-1)*$limit;
 		$data   = $this->simpanan_m->get_data_transaksi_ajax($offset,$limit,$search,$sort,$order);
 		$i	= 0;
-		$rows   = array(); 
+		$rows   = array();
 
 		foreach ($data['data'] as $r) {
 			$tgl_bayar = explode(' ', $r->tgl_transaksi);
 			$txt_tanggal = jin_date_ina($tgl_bayar[0]);
-			$txt_tanggal .= ' - ' . substr($tgl_bayar[1], 0, 5);		
+			$txt_tanggal .= ' - ' . substr($tgl_bayar[1], 0, 5);
 
 			//array keys ini = attribute 'field' di view nya
-			$anggota = $this->general_m->get_data_anggota($r->anggota_id);  
-			$nama_simpanan = $this->general_m->get_jns_simpanan($r->jenis_id);  
+			$anggota = $this->general_m->get_data_anggota($r->anggota_id);
+			$nama_simpanan = $this->general_m->get_jns_simpanan($r->jenis_id);
+			//mengambil angsuran
+			$row_pinjam = $this->general_m->get_data_simpanan ($r->id);
 
 			$rows[$i]['id'] = $r->id;
 			$rows[$i]['id_txt'] ='TRD' . sprintf('%05d', $r->id) . '';
 			$rows[$i]['tgl_transaksi'] = $r->tgl_transaksi;
 			$rows[$i]['tgl_transaksi_txt'] = $txt_tanggal;
 			$rows[$i]['anggota_id'] = $r->anggota_id;
+			//Menambahkan tabel anguran
+			if ($r->jumlah == $row_pinjam->pokok_angsuran) {
+			$rows[$i]['angsuran'] = '-';
+		}else{
+			$rows[$i]['angsuran'] = $row_pinjam->pokok_angsuran;
+		}
+		//tabel anguran end
 			//$rows[$i]['anggota_id_txt'] = 'AG' . sprintf('%04d', $r->anggota_id);
 			$rows[$i]['anggota_id_txt'] = $anggota->identitas;
 			$rows[$i]['nama'] = $anggota->nama;
@@ -202,8 +211,8 @@ class Simpanan extends OperatorController {
 			exit();
 		}
 
-		$tgl_dari = $_REQUEST['tgl_dari']; 
-		$tgl_sampai = $_REQUEST['tgl_sampai']; 
+		$tgl_dari = $_REQUEST['tgl_dari'];
+		$tgl_sampai = $_REQUEST['tgl_sampai'];
 
 		$this->load->library('Pdf');
 		$pdf = new Pdf('L', 'mm', 'A4', true, 'UTF-8', false);
@@ -228,6 +237,7 @@ class Simpanan extends OperatorController {
 			<th class="h_tengah" style="width:7%;"> Tanggal </th>
 			<th class="h_tengah" style="width:25%;"> Nama Anggota </th>
 			<th class="h_tengah" style="width:13%;"> Dept </th>
+			<th class="h_tengah" style="width:18%;"> Jenis Simpanan </th>
 			<th class="h_tengah" style="width:18%;"> Jenis Simpanan </th>
 			<th class="h_tengah" style="width:13%;"> Jumlah  </th>
 			<th class="h_tengah" style="width:10%;"> User </th>
@@ -265,7 +275,7 @@ class Simpanan extends OperatorController {
 		</table>';
 		$pdf->nsi_html($html);
 		$pdf->Output('trans_sp'.date('Ymd_His') . '.pdf', 'I');
-	} 
+	}
 
 	// Baru
 	function import() {
@@ -354,10 +364,10 @@ class Simpanan extends OperatorController {
 		$this->data['isi'] = $this->load->view('simpanan_import_v', $this->data, TRUE);
 		$this->load->view('themes/layout_utama_v', $this->data);
 	}
-	
+
 	function import_db() {
 		if($this->input->post('submit')) {
-			
+
 			$data_import = $this->input->post('val_arr');
 			if($this->simpanan_m->import_db($data_import)) {
 				$this->session->set_flashdata('import', 'OK');
@@ -366,7 +376,7 @@ class Simpanan extends OperatorController {
 			}
 			//hapus semua file di temp
 			$files = glob('uploads/temp/*');
-			foreach($files as $file){ 
+			foreach($files as $file){
 				if(is_file($file)) {
 					@unlink($file);
 				}
@@ -377,11 +387,11 @@ class Simpanan extends OperatorController {
 			redirect('simpanan/import');
 		}
 	}
-	
+
 	function import_batal() {
 		//hapus semua file di temp
 		$files = glob('uploads/temp/*');
-		foreach($files as $file){ 
+		foreach($files as $file){
 			if(is_file($file)) {
 				@unlink($file);
 			}
@@ -389,16 +399,16 @@ class Simpanan extends OperatorController {
 		$this->session->set_flashdata('import', 'BATAL');
 		redirect('simpanan/import');
 	}
-	
+
 	function export_excel(){
 		header("Content-type: application/vnd-ms-excel");
 		header("Content-Disposition: attachment; filename=export-".date("Y-m-d_H:i:s").".xls");
-		
+
 		$data   = $this->simpanan_m->get_data_excel();
 		$i	= 0;
-		$rows   = array(); 
-		
-		
+		$rows   = array();
+
+
 		echo "
 			<table border='1' cellpadding='5'>
 			  <tr>
@@ -426,9 +436,9 @@ class Simpanan extends OperatorController {
 			</tr>
 			";
 		}
-		
+
 		echo "</table>";
-		
+
 		die();
 	}
 }

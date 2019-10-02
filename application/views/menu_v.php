@@ -97,7 +97,7 @@ if(in_array($this->uri->segment(1), $menu_pinjam_arr)) {echo "active";}?>">
 
 <!-- laporan -->
 <li  class="treeview <?php
-	 $menu_lap_arr= array('lap_anggota','lap_kas_anggota','lap_simpanan','lap_kas_pinjaman','lap_tempo','lap_macet','lap_trans_kas','lap_buku_besar','lap_neraca','lap_saldo','lap_laba','lap_shu','lap_auto_debet','lap_toko','lap_trans_toko','lap_pinjaman_toko');
+	 $menu_lap_arr= array('lap_anggota','lap_kas_anggota','lap_simpanan_anggota','lap_pinjamaan_anggota','lap_simpanan','lap_kas_pinjaman','lap_tempo','lap_macet','lap_trans_kas','lap_buku_besar','lap_neraca','lap_saldo','lap_laba','lap_shu','lap_auto_debet','lap_toko','lap_trans_toko','lap_pinjaman_toko');
 	 if(in_array($this->uri->segment(1), $menu_lap_arr)) {echo "active";}?>">
 
 
@@ -111,9 +111,9 @@ if(in_array($this->uri->segment(1), $menu_pinjam_arr)) {echo "active";}?>">
 		<li class="<?php if ($this->uri->segment(1) == 'lap_anggota') { echo 'active'; } ?>"> <a href="<?php echo base_url(); ?>lap_anggota"><i class="fa fa-folder-open-o"></i> Data Anggota </a></li>
 	<?php } ?>
 		<li class="<?php if ($this->uri->segment(1) == 'lap_kas_anggota') { echo 'active'; } ?>"><a href="<?php echo base_url(); ?>lap_kas_anggota"> <i class="fa fa-folder-open-o"></i> Kas Anggota </a></li>
-		<li class="<?php if ($this->uri->segment(1) == 'lap_kas_anggota') { echo 'active'; } ?>"><a href="<?php echo base_url(); ?>Lap_kas_simpanan_anggota"> <i class="fa fa-folder-open-o"></i> Simpanan Anggota </a></li>
-		<li class="<?php if ($this->uri->segment(1) == 'lap_kas_anggota') { echo 'active'; } ?>"><a href="<?php echo base_url(); ?>Lap_kas_pinjaman_anggota"> <i class="fa fa-folder-open-o"></i> Pinjaman Anggota </a></li>
-
+		<li class="<?php if ($this->uri->segment(1) == 'lap_simpanan_anggota') { echo 'active'; } ?>"><a href="<?php echo base_url(); ?>Lap_kas_simpanan_anggota"> <i class="fa fa-folder-open-o"></i> Simpanan Anggota </a></li>
+		<li class="<?php if ($this->uri->segment(1) == 'lap_pinjamaan_anggota') { echo 'active'; } ?>"><a href="<?php echo base_url(); ?>Lap_kas_pinjaman_anggota"> <i class="fa fa-folder-open-o"></i> Pinjaman Anggota </a></li>
+		<li class="<?php if ($this->uri->segment(1) == 'lap_bunga') { echo 'active'; } ?>"><a href="<?php echo base_url(); ?>Lap_bunga"> <i class="fa fa-folder-open-o"></i> Laporan Bunga</a></li>
 
 		<li class="<?php if ($this->uri->segment(1) == 'lap_auto_debet') { echo 'active'; } ?>"> <a href="<?php echo base_url(); ?>lap_auto_debet"><i class="fa fa-folder-open-o"></i> Laporan Auto Debet</a></li>
 

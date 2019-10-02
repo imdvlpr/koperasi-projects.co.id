@@ -1,4 +1,3 @@
-<!-- Styler -->
 <style type="text/css">
 .panel * {
 	font-family: "Arial","​Helvetica","​sans-serif";
@@ -27,7 +26,7 @@
 
 <div class="box box-solid box-primary">
 	<div class="box-header">
-		<h3 class="box-title">Cetak Data Pinjaman Anggota</h3>
+		<h3 class="box-title">Cetak Data Kas Anggota</h3>
 		<div class="box-tools pull-right">
 			<button class="btn btn-primary btn-sm" data-widget="collapse">
 				<i class="fa fa-minus"></i>
@@ -54,7 +53,7 @@
 					<a href="javascript:void(0);" id="btn_filter" class="easyui-linkbutton" iconCls="icon-search" plain="false" onclick="doSearch()">Lihat Laporan</a>
 					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-print" plain="false" onclick="cetak()">Cetak Laporan</a>
 					<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-clear" plain="false" onclick="clearSearch()">Hapus Filter</a>
-					<a href="<?=base_url()?>lap_kas_pinjaman_anggota/export_excel" class="easyui-linkbutton" iconCls="icon-excel" plain="false">Ekspor</a>
+					<a href="<?=base_url()?>lap_kas_anggota/export_excel" class="easyui-linkbutton" iconCls="icon-excel" plain="false">Ekspor</a>
 				</td>
 			</tr>
 		</table>
@@ -65,12 +64,13 @@
 <div class="box box-primary">
 	<div class="box-body">
 	<p></p>
-	<p style="text-align:center; font-size: 15pt; font-weight: bold;"> Laporan Data Pinjaman Anggota </p>
+	<p style="text-align:center; font-size: 15pt; font-weight: bold;"> Laporan Data Kas Per Anggota </p>
 	<table  class="table table-bordered">
 		<tr class="header_kolom">
 			<th style="width:5%; vertical-align: middle; text-align:center" > No. </th>
 			<th style="width:5%; vertical-align: middle; text-align:center">Photo</th>
 			<th style="width:25%; vertical-align: middle; text-align:center"> Identitas  </th>
+			<th style="width:20%; vertical-align: middle; text-align:center">Saldo Simpanan</th>
 			<th style="width:20%; vertical-align: middle; text-align:center"> Tagihan Kredit </th>
 			<th style="width:23%; vertical-align: middle; text-align:center"> Keterangan </th>
 		</tr>
@@ -154,7 +154,7 @@
 						<tr><td> Alamat  : '.$row->alamat.' Telp.'.$row->notelp.' </td></tr>
 					</table>
 				</td>
-				';
+				<td>';
 				$simpanan_arr = array();
 				$simpanan_row_total = 0;
 				$simpanan_total = 0;
@@ -171,9 +171,17 @@
 
 					$transaksi_user=$control->lap_kas_anggota_m->get_data_transaksi('1');
 
-
+					echo'<table style="width:100%;">
+							<tr>
+								<td>'.$jenis->jns_simpan.'</td>
+								<td class="h_kanan">'. number_format($simpanan_row).'</td>
+							</tr>';
 					}
-
+					echo '<tr>
+								<td><strong> Jumlah Simpanan </strong></td>
+								<td class="h_kanan"><strong> '.number_format($simpanan_row_total).'</strong></td>
+							</tr>
+							</table>';
 					echo '
 					<td>
 						<table style="width:100%;">
@@ -372,7 +380,7 @@ function cetak () {
 			echo 'var jenis_anggota_id = $("#jenis_anggota_id").val();';
 		}
 	?>
-	var win = window.open('<?php echo site_url("lap_kas_pinjaman_anggota/cetak_laporan/?jenis_anggota_id=' + jenis_anggota_id +'&anggota_id=' + anggota_id +'"); ?>');
+	var win = window.open('<?php echo site_url("lap_kas_anggota/cetak_laporan/?jenis_anggota_id=' + jenis_anggota_id +'&anggota_id=' + anggota_id +'"); ?>');
 	if (win) {
 		win.focus();
 	} else {
@@ -386,3 +394,308 @@ function doSearch() {
 	$('#fmCari').submit();
 }
 </script>
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="box box-solid box-primary">
+			<div class="box-header">
+				<h3 class="box-title">Biaya dan Administrasi</h3>
+				<div class="box-tools pull-right">
+					<button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+				</div>
+			</div>
+			<div class="box-body">
+				<?php if($tersimpan == 'Y') { ?>
+					<div class="box-body">
+						<div class="alert alert-success alert-dismissable">
+		                    <i class="fa fa-check"></i>
+		                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		                    Data berhasil disimpan.
+		                </div>
+					</div>
+				<?php } ?>
+
+				<?php if($tersimpan == 'N') { ?>
+					<div class="box-body">
+						<div class="alert alert-danger alert-dismissable">
+		                    <i class="fa fa-warning"></i>
+		                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		                    Data tidak berhasil disimpan, silahkan ulangi beberapa saat lagi.
+		                </div>
+					</div>
+				<?php } ?>
+
+		<div class="form-group">
+					<?php
+					echo form_open('');
+
+			echo '
+			<table width="70%">
+			<tr>
+				<td>';
+				// tipe bunga
+				$options = array(
+					'A'  => 'A: Persen Bunga dikali angsuran bln',
+					'B'  => 'B: Persen Bunga dikali total pinjaman'
+					//'C'  => 'C: Bunga Menurun = Persen Bunga dikali sisa pinjaman'
+					);
+				echo form_label('Tipe Pinjaman Bunga', 'pinjaman_bunga_tipe');
+				echo form_dropdown('pinjaman_bunga_tipe', $options, $pinjaman_bunga_tipe, 'id="pinjaman_bunga_tipe" class="form-control"');
+				echo '
+				</td>
+				<td>';
+
+			//dana cadangan
+				$data = array(
+					'name'        	=> 'dana_cadangan',
+					'id'				=> 'dana_cadangan',
+					'class'			=> 'form-control',
+					'value'       	=> $dana_cadangan,
+					'maxlength'   	=> '255',
+					'style'       	=> 'width: 50%'
+					);
+				echo form_label('Dana Cadangan (%)', 'dana_cadangan');
+				echo form_input($data);
+				echo '
+				</td>
+				<td>';
+
+				$data = array(
+					'name'        	=> 'jasa_usaha',
+					'id'				=> 'jasa_usaha',
+					'class'			=> 'form-control',
+					'value'       	=> $jasa_usaha,
+					'maxlength'   	=> '255',
+					'style'       	=> 'width: 50%'
+					);
+				echo form_label('Jasa Usaha (%)', 'jasa_usaha');
+				echo form_input($data);
+				echo '
+				</td>
+			</tr>';
+
+			echo '
+			<tr>
+				<td>';
+				//bunga pinjman
+				$data = array(
+					'name'        => 'bg_pinjam',
+					'id'			  => 'bg_pinjam',
+					'class'		  => 'form-control',
+					'value'       => $bg_pinjam,
+					'maxlength'   => '255',
+					'style'       => 'width: 50%'
+					);
+				echo form_label('Suku Bunga Pinjaman (%)', 'bg_pinjam');
+				echo form_input($data);
+				echo '
+				</td>
+				<td>';
+
+			//dana cadangan
+			$data = array(
+				'name'        => 'jasa_anggota',
+				'id'			=> 'jasa_anggota',
+				'class'		=> 'form-control',
+				'value'       => $jasa_anggota,
+				'maxlength'   => '255',
+				'style'       => 'width: 50%'
+				);
+			echo form_label('Jasa Anggota (%)', 'jasa_anggota');
+			echo form_input($data);
+			echo '
+				</td>
+				<td>';
+			$data = array(
+				'name'        => 'jasa_modal',
+				'id'			=> 'jasa_modal',
+				'class'		=> 'form-control',
+				'value'       => $jasa_modal,
+				'maxlength'   => '255',
+				'style'       => 'width: 50%'
+				);
+			echo form_label('Jasa Modal Anggota (%)', 'jasa_modal');
+			echo form_input($data);
+			echo '
+				</td>
+			</tr>';
+
+
+			//biaya admin
+			echo '
+			<tr>
+				<td>';
+			$data = array(
+				'name'   		   => 'biaya_adm',
+				'id'					=> 'biaya_adm',
+				'class'				=> 'form-control',
+				'value'      		=> $biaya_adm,
+				'maxlength'   		=> '255',
+				'style'      		=> 'width: 50%'
+				);
+			echo form_label('Biaya Administrasi (Rp)', 'biaya_adm');
+			echo form_input($data);
+			echo '
+				</td>
+				<td>';
+
+			//dana pengurus
+			$data = array(
+				'name'        => 'dana_pengurus',
+				'id'			=> 'dana_pengurus',
+				'class'		=> 'form-control',
+				'value'       => $dana_pengurus,
+				'maxlength'   => '255',
+				'style'       => 'width: 50%'
+				);
+			echo form_label('Dana Pengurus (%)', 'dana_pengurus');
+			echo form_input($data);
+			echo '
+				</td>
+				<td>';
+			//pjk pph
+			$data = array(
+				'name'        => 'pjk_pph',
+				'id'			=> 'pjk_pph',
+				'class'		=> 'form-control',
+				'value'       => $pjk_pph,
+				'maxlength'   => '255',
+				'style'       => 'width: 50%'
+				);
+			echo form_label('Pajak PPh (%)', 'pjk_pph');
+			echo form_input($data);
+			echo '
+				</td>
+			</tr>';
+
+			//biaya denda
+			echo '
+			<tr>
+				<td>';
+			$data = array(
+				'name'        => 'denda',
+				'id'			=> 'denda',
+				'class'		=> 'form-control',
+				'value'       => $denda,
+				'maxlength'   => '255',
+				'style'       => 'width: 50%'
+				);
+			echo form_label('Biaya Denda (Rp)', 'denda');
+			echo form_input($data);
+			echo '
+				</td>
+				<td>';
+
+			//dana karyawan
+			$data = array(
+				'name'        => 'dana_karyawan',
+				'id'			=> 'dana_karyawan',
+				'class'		=> 'form-control',
+				'value'       => $dana_karyawan,
+				'maxlength'   => '255',
+				'style'       => 'width: 50%'
+				);
+			echo form_label('Dana Karyawan (%)', 'dana_karyawan');
+			echo form_input($data);
+			echo '
+				</td>
+				<td>';
+			//jasa pembangunan daerah kerja
+				$data = array(
+				'name'        => 'js_pemb_daerah_kerja',
+				'id'			=> 'js_pemb_daerah_kerja',
+				'class'		=> 'form-control',
+				'value'       => $js_pemb_daerah_kerja,
+				'maxlength'   => '255',
+				'style'       => 'width: 50%'
+				);
+			echo form_label('Jasa Pembangunan Daerah Kerja (%)', 'js_pemb_daerah_kerja');
+			echo form_input($data);
+			echo '</td>
+			</tr>';
+
+			//jumlah denda hari
+			echo '<tr><td>';
+			$data = array(
+				'name'        => 'denda_hari',
+				'id'			=> 'denda_hari',
+				'class'		=> 'form-control',
+				'value'       => $denda_hari,
+				'maxlength'   => '25',
+				'style'       => 'width: 50%'
+				);
+			echo form_label('Tempo Tanggal Pembayaran', 'denda_hari');
+			echo form_input($data);
+			echo '
+				</td>
+				<td>';
+
+			//dana pendidikan
+			$data = array(
+				'name'        => 'dana_pend',
+				'id'			=> 'dana_pend',
+				'class'		=> 'form-control',
+				'value'       => $dana_pend,
+				'maxlength'   => '25',
+				'style'       => 'width: 50%'
+				);
+			echo form_label('Dana Pendidikan (%)', 'dana_pend');
+			echo form_input($data);
+			echo '
+				</td>
+				<td>';
+
+				//jasa dana pembinaan
+				$data = array(
+				'name'        => 'jasa_dana_pembinaan',
+				'id'			=> 'jasa_dana_pembinaan',
+				'class'		=> 'form-control',
+				'value'       => $jasa_dana_pembinaan,
+				'maxlength'   => '25',
+				'style'       => 'width: 50%'
+				);
+			echo form_label('Jasa Dana Pembinaan (%)', 'jasa_dana_pembinaan');
+			echo form_input($data);
+			echo	'</td>
+			</tr>';
+			//dana sosial
+			echo '
+			<tr>
+				<td></td>
+				<td>';
+			$data = array(
+				'name'        => 'dana_sosial',
+				'id'			=> 'dana_sosial',
+				'class'		=> 'form-control',
+				'value'       => $dana_sosial,
+				'maxlength'   => '255',
+				'style'       => 'width: 50%'
+				);
+			echo form_label('Dana Sosial (%)', 'dana_sosial');
+			echo form_input($data);
+			echo '
+				</td>
+				<td></td>
+			</tr>
+
+		</table>';
+
+					// submit
+					$data = array(
+				    'name' 		=> 'submit',
+				    'id' 		=> 'submit',
+				    'class' 	=> 'btn btn-primary',
+				    'value'		=> 'true',
+				    'type'	 	=> 'submit',
+				    'content' 	=> 'Update'
+					);
+					echo '<br>';
+					echo form_button($data);
+					echo form_close();
+
+					?>
+				</div>
+			</div><!-- /.box-body -->
+		</div>
+	</div>
+</div>
